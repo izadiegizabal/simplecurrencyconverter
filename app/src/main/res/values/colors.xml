@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#32dbc7</color>
 
+    <color name="color_on_background">#000</color>
+
     <color name="color_pad">#FFFFFF</color>
+    <color name="color_placeholder">#0D000000</color>
 </resources>

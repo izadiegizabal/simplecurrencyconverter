@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_on_background">#fff</color>
+
     <color name="color_pad">#0C0C0C</color>
+    <color name="color_placeholder">#28FFFFFF</color>
 </resources>
