@@ -17,8 +17,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 import xyz.izadi.simplecurrencyconverter.data.CurrenciesViewModel
 import xyz.izadi.simplecurrencyconverter.data.api.Currencies
 import xyz.izadi.simplecurrencyconverter.data.api.Rates
+import xyz.izadi.simplecurrencyconverter.data.getDateString
 import xyz.izadi.simplecurrencyconverter.data.reformatIfNeeded
-import java.util.ArrayList
+import java.sql.Timestamp
+import java.text.DateFormat
+import java.text.DateFormat.getDateInstance
+import java.text.DateFormat.getTimeInstance
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener {
     private val activeCurCodes = ArrayList<String>()
@@ -143,8 +149,7 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
             }
         }
 
-        val formattedDate = android.text.format.DateFormat.getDateFormat(this).format(mRates.timestamp)
-        tv_exchange_provider.text = getString(R.string.exchanges_provided_at, formattedDate)
+        tv_exchange_provider.text = getString(R.string.exchanges_provided_at, getDateString(mRates.timestamp))
     }
 
     private fun getAmount(): Double {

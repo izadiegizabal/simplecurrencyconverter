@@ -40,7 +40,7 @@ class CurrenciesListDialogFragment : BottomSheetDialogFragment() {
 
         val currencies: Currencies = requireArguments().getParcelable(ARG_CURRENCIES)!!
         currencies.totalCurrencies = currencies.currencies.size
-        
+
         mAdapter = CurrenciesAdapter(currencies)
         rv_currency_list.adapter = mAdapter
 

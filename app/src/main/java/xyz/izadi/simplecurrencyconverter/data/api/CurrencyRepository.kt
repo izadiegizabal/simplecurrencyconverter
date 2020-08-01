@@ -1,15 +1,23 @@
 package xyz.izadi.simplecurrencyconverter.data.api
 
-class CurrencyRepository {
-    private var client: CurrencyLayerApi = RetrofitClient.apiService
+import android.app.Application
+import android.util.Log
+import androidx.room.Room
+import xyz.izadi.simplecurrencyconverter.data.db.CurrenciesDatabase
+import xyz.izadi.simplecurrencyconverter.data.db.DBCurrency
 
-    companion object Factory {
-        val instance: CurrencyRepository
-            @Synchronized get() {
-                return CurrencyRepository()
-            }
-    }
+
+class CurrencyRepository(app: Application) {
+    private var client: CurrencyLayerApi = RetrofitClient.apiService
+    private var db = Room.databaseBuilder(
+        app,
+        CurrenciesDatabase::class.java, "currencies-db"
+    ).build()
 
     suspend fun getCurrencies() = client.getCurrencies()
     suspend fun getRates() = client.getRates()
+
+    suspend fun getDbCurrencies() = db.currencyDAO().getAll()
+
+    suspend fun addToDb(currencies: List<DBCurrency>) = db.currencyDAO().insertAll(currencies)
 }

@@ -1,6 +1,8 @@
 package xyz.izadi.simplecurrencyconverter.data
 
 import java.math.BigDecimal
+import java.text.DateFormat
+import java.util.*
 
 fun round(numberToRound: Double, decimalPlaces: Int): Float {
     try {
@@ -81,4 +83,11 @@ fun reformatIfNeeded(quantity: String): String {
     }
 
     return quantityRes
+}
+
+fun getDateString(timestamp: Long): String {
+    val date = Date(timestamp * 1000)
+    val dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT)
+    val timeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT)
+    return "${dateFormatter.format(date)} ${timeFormatter.format(date)}"
 }

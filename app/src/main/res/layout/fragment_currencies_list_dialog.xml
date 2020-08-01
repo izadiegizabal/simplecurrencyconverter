@@ -5,7 +5,6 @@
         android:id="@+id/cl_bs_currency_selector"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_rounded_dialog"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
@@ -14,13 +13,13 @@
             android:orientation="vertical">
 
         <TextView
-                android:id="@+id/textView3"
-                style="@style/ModeHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="8dp"
-                android:text="@string/select_currency"
-                android:textSize="24sp" />
+            android:id="@+id/textView3"
+            style="@style/ModeHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="@string/select_currency"
+            android:textSize="24sp" />
 
         <androidx.appcompat.widget.SearchView
                 android:id="@+id/sv_currencies"
