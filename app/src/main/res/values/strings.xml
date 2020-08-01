@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">SimpleCurrencyConverter</string>
+    <string name="app_name">Converter</string>
+
+    <string name="exchanges_provided_at">Rates updated at %1$s</string>
+    <string name="tt_currency_1">Select First Currency</string>
+    <string name="tt_currency_2">Select Second Currency</string>
+    <string name="tt_currency_3">Select Third Currency</string>
 </resources>
