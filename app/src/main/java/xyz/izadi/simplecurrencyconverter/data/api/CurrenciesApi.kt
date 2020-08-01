@@ -17,7 +17,7 @@ interface CurrencyLayerApi {
 @Parcelize
 data class Currencies (
     val success: Boolean,
-    val totalCurrencies: Int,
+    var totalCurrencies: Int,
     val currencies: Map<String, String>
 ) : Parcelable
 

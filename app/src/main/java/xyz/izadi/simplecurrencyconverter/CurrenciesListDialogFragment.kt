@@ -37,7 +37,11 @@ class CurrenciesListDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layoutManager = LinearLayoutManager(context)
         rv_currency_list.layoutManager = layoutManager
-        mAdapter = CurrenciesAdapter(requireArguments().getParcelable(ARG_CURRENCIES)!!)
+
+        val currencies: Currencies = requireArguments().getParcelable(ARG_CURRENCIES)!!
+        currencies.totalCurrencies = currencies.currencies.size
+        
+        mAdapter = CurrenciesAdapter(currencies)
         rv_currency_list.adapter = mAdapter
 
         setUpQueryListener()
@@ -137,11 +141,10 @@ class CurrenciesListDialogFragment : BottomSheetDialogFragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             if (position < mCurrenciesFiltered.currencies.size) {
-                Log.d("GOT IT", "Mmmmmm it works?")
                 mCurrenciesFiltered.currencies
                 val currency = mCurrenciesFiltered.currencies.keys.toList()[position]
                 holder.cod.text = currency
-                holder.desc.text = getString(R.string.currency_desc, currency)
+                holder.desc.text = getString(R.string.currency_desc, mCurrencies.currencies[currency])
             }
         }
 
@@ -157,12 +160,12 @@ class CurrenciesListDialogFragment : BottomSheetDialogFragment() {
                     mCurrenciesFiltered = if (charString.isEmpty()) {
                         mCurrencies
                     } else {
-                        val filteredList = mapOf<String, String>()
+                        val filteredList = mutableMapOf<String, String>()
                         for ((code, name) in mCurrencies.currencies) {
                             if (code.toLowerCase(Locale.ROOT).contains(charString)
                                 || name.toLowerCase(Locale.ROOT).contains(charString)
                             ) {
-                                filteredList.plus(Pair(code, name))
+                                filteredList[code] = name
                             }
                         }
                         Currencies(true, filteredList.size, filteredList)
