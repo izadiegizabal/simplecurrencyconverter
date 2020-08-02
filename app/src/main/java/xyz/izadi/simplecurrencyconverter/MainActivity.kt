@@ -4,13 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,11 +16,6 @@ import xyz.izadi.simplecurrencyconverter.data.api.Currencies
 import xyz.izadi.simplecurrencyconverter.data.api.Rates
 import xyz.izadi.simplecurrencyconverter.data.getDateString
 import xyz.izadi.simplecurrencyconverter.data.reformatIfNeeded
-import java.sql.Timestamp
-import java.text.DateFormat
-import java.text.DateFormat.getDateInstance
-import java.text.DateFormat.getTimeInstance
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener {
@@ -55,7 +47,6 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     }
 
 
-
     private fun observeViewModel(viewModel: CurrenciesViewModel) {
         viewModel.currenciesLiveData.observe(this, Observer { currencies ->
             if (currencies != null) {
@@ -85,7 +76,8 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     }
 
     private fun setUpNetworkChangeListener() {
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.registerNetworkCallback(
             NetworkRequest.Builder().build(),
             object : ConnectivityManager.NetworkCallback() {
@@ -116,15 +108,18 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         when (listPos) {
             0 -> {
                 tv_currency_1_code.text = code
-                tv_currency_1_desc.text = getString(R.string.currency_desc, mCurrencies.currencies[code])
+                tv_currency_1_desc.text =
+                    getString(R.string.currency_desc, mCurrencies.currencies[code])
             }
             1 -> {
                 tv_currency_2_code.text = code
-                tv_currency_2_desc.text = getString(R.string.currency_desc, mCurrencies.currencies[code])
+                tv_currency_2_desc.text =
+                    getString(R.string.currency_desc, mCurrencies.currencies[code])
             }
             2 -> {
                 tv_currency_3_code.text = code
-                tv_currency_3_desc.text = getString(R.string.currency_desc, mCurrencies.currencies[code])
+                tv_currency_3_desc.text =
+                    getString(R.string.currency_desc, mCurrencies.currencies[code])
             }
         }
 
@@ -164,8 +159,10 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
         val updatedAt = currencyViewModel.getLastUpdateDate()
         if (updatedAt != null) {
-            tv_exchange_provider.text = getString(R.string.exchanges_provided_at,
-            getDateString(updatedAt))
+            tv_exchange_provider.text = getString(
+                R.string.exchanges_provided_at,
+                getDateString(updatedAt)
+            )
         } else {
             tv_exchange_provider.text = getString(R.string.exchanges_provided_soon)
         }
@@ -190,7 +187,7 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         }
     }
 
-    private fun openCurrencyPickerDialog(){
+    private fun openCurrencyPickerDialog() {
         CurrenciesListDialogFragment.newInstance(mCurrencies).show(supportFragmentManager, "dialog")
     }
 
@@ -234,10 +231,11 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     }
 
     private fun getNonActiveColor(): Int {
-        return ContextCompat.getColor( this, R.color.color_on_background )
+        return ContextCompat.getColor(this, R.color.color_on_background)
     }
+
     private fun getActiveColor(): Int {
-        return ContextCompat.getColor( this, R.color.colorAccent )
+        return ContextCompat.getColor(this, R.color.colorAccent)
     }
 
     private fun setUpPadListeners() {

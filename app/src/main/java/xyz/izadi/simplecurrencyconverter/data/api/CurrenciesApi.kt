@@ -15,7 +15,7 @@ interface CurrencyLayerApi {
 }
 
 @Parcelize
-data class Currencies (
+data class Currencies(
     val success: Boolean,
     var totalCurrencies: Int,
     val currencies: Map<String, String>

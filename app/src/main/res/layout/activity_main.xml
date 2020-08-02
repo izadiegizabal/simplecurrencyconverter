@@ -28,10 +28,10 @@
         <ImageView
             android:id="@+id/iv_currency_1_arrow"
             style="@style/CurrencyArrow"
+            android:contentDescription="@string/tt_currency_1"
             app:layout_constraintBottom_toBottomOf="@id/tv_currency_1_code"
             app:layout_constraintStart_toEndOf="@id/tv_currency_1_code"
-            app:layout_constraintTop_toTopOf="@id/tv_currency_1_code"
-            android:contentDescription="@string/tt_currency_1" />
+            app:layout_constraintTop_toTopOf="@id/tv_currency_1_code" />
     </LinearLayout>
 
     <TextView
@@ -68,10 +68,10 @@
         <ImageView
             android:id="@+id/iv_currency_2_arrow"
             style="@style/CurrencyArrow"
+            android:contentDescription="@string/tt_currency_2"
             app:layout_constraintBottom_toBottomOf="@id/tv_currency_2_code"
             app:layout_constraintStart_toEndOf="@id/tv_currency_2_code"
-            app:layout_constraintTop_toTopOf="@id/tv_currency_2_code"
-            android:contentDescription="@string/tt_currency_2" />
+            app:layout_constraintTop_toTopOf="@id/tv_currency_2_code" />
     </LinearLayout>
 
     <TextView
@@ -108,10 +108,10 @@
         <ImageView
             android:id="@+id/iv_currency_3_arrow"
             style="@style/CurrencyArrow"
+            android:contentDescription="@string/tt_currency_3"
             app:layout_constraintBottom_toBottomOf="@id/tv_currency_3_code"
             app:layout_constraintStart_toEndOf="@id/tv_currency_3_code"
-            app:layout_constraintTop_toTopOf="@id/tv_currency_3_code"
-            android:contentDescription="@string/tt_currency_3" />
+            app:layout_constraintTop_toTopOf="@id/tv_currency_3_code" />
     </LinearLayout>
 
 

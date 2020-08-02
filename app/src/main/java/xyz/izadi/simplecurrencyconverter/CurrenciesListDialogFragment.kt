@@ -3,12 +3,14 @@ package xyz.izadi.simplecurrencyconverter
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -144,7 +146,8 @@ class CurrenciesListDialogFragment : BottomSheetDialogFragment() {
                 mCurrenciesFiltered.currencies
                 val currency = mCurrenciesFiltered.currencies.keys.toList()[position]
                 holder.cod.text = currency
-                holder.desc.text = getString(R.string.currency_desc, mCurrencies.currencies[currency])
+                holder.desc.text =
+                    getString(R.string.currency_desc, mCurrencies.currencies[currency])
             }
         }
 

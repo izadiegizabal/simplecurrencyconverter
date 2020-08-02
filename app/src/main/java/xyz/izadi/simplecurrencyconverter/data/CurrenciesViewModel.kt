@@ -9,7 +9,7 @@ import xyz.izadi.simplecurrencyconverter.data.api.Rates
 import xyz.izadi.simplecurrencyconverter.data.db.DBCurrency
 import java.util.*
 
-class CurrenciesViewModel(application: Application): AndroidViewModel(application) {
+class CurrenciesViewModel(application: Application) : AndroidViewModel(application) {
 
     private var repository = CurrencyRepository(application)
     var currenciesLiveData: MutableLiveData<Currencies> = MutableLiveData()
@@ -33,7 +33,7 @@ class CurrenciesViewModel(application: Application): AndroidViewModel(applicatio
                     currenciesLiveData.postValue(getCurrenciesFromDBFormat(ratesDB))
                 }
 
-                if(doWeUpdate()) {
+                if (doWeUpdate()) {
                     val ratesRequest = repository.getRates()
                     if (ratesRequest.success) {
                         updateRates()
@@ -66,8 +66,10 @@ class CurrenciesViewModel(application: Application): AndroidViewModel(applicatio
 
         for ((code, name) in currentCurrencies.currencies) {
             currentRates.quotes["USD$code"]?.let {
-                DBCurrency(code, name,
-                    it, currentRates.timestamp)
+                DBCurrency(
+                    code, name,
+                    it, currentRates.timestamp
+                )
             }?.let {
                 validCurrencyForDB.add(it)
             }
@@ -84,9 +86,9 @@ class CurrenciesViewModel(application: Application): AndroidViewModel(applicatio
 
     // update the rates if the cool down time has passed
     fun updateRatesIfNeeded() {
-        if(currenciesLiveData.value == null) {
+        if (currenciesLiveData.value == null) {
             getCurrencies()
-        } else if(doWeUpdate()) viewModelScope.launch {
+        } else if (doWeUpdate()) viewModelScope.launch {
             updateRates()
         }
     }
@@ -96,20 +98,26 @@ class CurrenciesViewModel(application: Application): AndroidViewModel(applicatio
         val currentTime = Date(System.currentTimeMillis()).time
         // if less than 30mins since last update no need to update again
         val dateLastUpdate = getLastUpdateDate() ?: return true
-        val minsSinceLastUpdate = ((currentTime - dateLastUpdate.time)/1000)/60
+        val minsSinceLastUpdate = ((currentTime - dateLastUpdate.time) / 1000) / 60
         return minsSinceLastUpdate > CHECK_UPDATES_EVERY
     }
 
     // Get the time of the last successful update of Rates
     fun getLastUpdateDate(): Date? {
-        val sharedPref = getApplication<Application>().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPref = getApplication<Application>().getSharedPreferences(
+            PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
         if (!sharedPref.contains(UPDATED_AT)) return null
         return Date(sharedPref.getLong(UPDATED_AT, Date(System.currentTimeMillis()).time))
     }
 
     // Set a new date as the last time when the rates where updated
     private fun updateLastRetrievalDate(date: Date) {
-        val sharedPref = getApplication<Application>().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPref = getApplication<Application>().getSharedPreferences(
+            PREFERENCE_NAME,
+            Context.MODE_PRIVATE
+        )
         with(sharedPref.edit()) {
             putLong(UPDATED_AT, date.time)
             apply()

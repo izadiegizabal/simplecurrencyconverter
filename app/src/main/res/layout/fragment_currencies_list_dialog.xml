@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/cl_bs_currency_selector"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/bottom_sheet_behavior">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_bs_currency_selector"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/bottom_sheet_behavior">
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView3"
@@ -22,27 +22,27 @@
             android:textSize="24sp" />
 
         <androidx.appcompat.widget.SearchView
-                android:id="@+id/sv_currencies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_thin_rectangle"
-                app:iconifiedByDefault="false"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="@string/currency_query_hint" />
+            android:id="@+id/sv_currencies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/bg_thin_rectangle"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="@string/currency_query_hint" />
 
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_currency_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:minHeight="5000dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                tools:context=".currencies.CurrenciesListDialogFragment"
-                tools:listitem="@layout/fragment_currencies_list_dialog_item" />
+            android:id="@+id/rv_currency_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:minHeight="5000dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            tools:context=".currencies.CurrenciesListDialogFragment"
+            tools:listitem="@layout/fragment_currencies_list_dialog_item" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
