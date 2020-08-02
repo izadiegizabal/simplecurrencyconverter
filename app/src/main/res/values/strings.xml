@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Converter</string>
+    <string name="app_name">Currencies</string>
 
     <string name="exchanges_provided_at">Rates updated at %1$s</string>
     <string name="exchanges_provided_soon">Wait until we retrieve the rates…</string>
