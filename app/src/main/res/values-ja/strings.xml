@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">通貨換算</string>
+    <string name="exchanges_provided_at">%1$sに通貨レートを更新しました</string>
+    <string name="exchanges_provided_soon">レートを更新中です</string>
+    <string name="tt_currency_1">第一通貨を選んでください</string>
+    <string name="tt_currency_2">第二通貨を選んでください</string>
+    <string name="tt_currency_3">第三通貨を選んでください</string>
+    <string name="tt_currency_active">主な通貨にする</string>
+    <string name="select_currency">通貨一覧</string>
+</resources>
