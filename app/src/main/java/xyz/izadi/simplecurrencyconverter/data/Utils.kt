@@ -1,5 +1,8 @@
 package xyz.izadi.simplecurrencyconverter.data
 
+import xyz.izadi.simplecurrencyconverter.data.api.Currencies
+import xyz.izadi.simplecurrencyconverter.data.api.Rates
+import xyz.izadi.simplecurrencyconverter.data.db.DBCurrency
 import java.math.BigDecimal
 import java.text.DateFormat
 import java.util.*
@@ -85,9 +88,24 @@ fun reformatIfNeeded(quantity: String): String {
     return quantityRes
 }
 
-fun getDateString(timestamp: Long): String {
-    val date = Date(timestamp * 1000)
+fun getDateString(date: Date): String {
     val dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT)
     val timeFormatter = DateFormat.getTimeInstance(DateFormat.SHORT)
     return "${dateFormatter.format(date)} ${timeFormatter.format(date)}"
+}
+
+fun getCurrenciesFromDBFormat(dbCurrencies: List<DBCurrency>): Currencies {
+    val currenciesMap = mutableMapOf<String, String>()
+    for (currency in dbCurrencies) {
+        currenciesMap[currency.code] = currency.name
+    }
+    return Currencies(true, dbCurrencies.size, currenciesMap)
+}
+
+fun getRatesFromDBFormat(dbCurrencies: List<DBCurrency>): Rates {
+    val currenciesMap = mutableMapOf<String, Float>()
+    for (currency in dbCurrencies) {
+        currenciesMap["USD${currency.code}"] = currency.rate
+    }
+    return Rates(true, dbCurrencies[0].timestamp, currenciesMap)
 }

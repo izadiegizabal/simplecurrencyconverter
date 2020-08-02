@@ -49,15 +49,17 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
         setUpCurrencySelectorListeners()
         setUpToolTips()
+        setUpNetworkChangeListener()
 
         tv_currency_1_quantity.performClick()
     }
+
+
 
     private fun observeViewModel(viewModel: CurrenciesViewModel) {
         viewModel.currenciesLiveData.observe(this, Observer { currencies ->
             if (currencies != null) {
                 mCurrencies = currencies
-                viewModel.updateRates()
             }
         })
 
@@ -80,6 +82,17 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         TooltipCompat.setTooltipText(tv_currency_1_quantity, getString(R.string.tt_currency_active))
         TooltipCompat.setTooltipText(tv_currency_2_quantity, getString(R.string.tt_currency_active))
         TooltipCompat.setTooltipText(tv_currency_3_quantity, getString(R.string.tt_currency_active))
+    }
+
+    private fun setUpNetworkChangeListener() {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.registerNetworkCallback(
+            NetworkRequest.Builder().build(),
+            object : ConnectivityManager.NetworkCallback() {
+                override fun onAvailable(network: Network) {
+                    currencyViewModel.updateRatesIfNeeded()
+                }
+            })
     }
 
     private fun setPreferredCurrencies() {
@@ -125,7 +138,7 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     }
 
     private fun calculateConversions() {
-        // Get conversions rates an calculate rates
+        // Calculate rates
         if (mActiveCurrencyIndex != -1) {
             makeConversions()
         }
@@ -149,7 +162,10 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
             }
         }
 
-        tv_exchange_provider.text = getString(R.string.exchanges_provided_at, getDateString(mRates.timestamp))
+        val updatedAt = currencyViewModel.getLastUpdateDate()
+        if (updatedAt != null) tv_exchange_provider.text = getString(R.string.exchanges_provided_at,
+            getDateString(updatedAt)
+        ) else tv_exchange_provider.text = getString(R.string.exchanges_provided_soon)
     }
 
     private fun getAmount(): Double {
@@ -183,22 +199,13 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         tv_currency_1_quantity.setOnClickListener {
             if (mActiveCurrencyIndex != 0) {
                 tv_currency_1_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.colorAccent
-                    )
+                    ContextCompat.getColor( this, R.color.colorAccent)
                 )
                 tv_currency_2_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
+                    ContextCompat.getColor(this, R.color.color_on_background)
                 )
                 tv_currency_3_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
+                    ContextCompat.getColor( this, R.color.color_on_background )
                 )
 
                 resetActiveCurrencyValues(0, 1)
@@ -259,49 +266,20 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     }
 
     private fun setUpPadListeners() {
-        bt_pad_0.setOnClickListener {
-            addAmount("0")
-        }
-
-        bt_pad_1.setOnClickListener {
-            addAmount("1")
-        }
-
-        bt_pad_2.setOnClickListener {
-            addAmount("2")
-        }
-
-        bt_pad_3.setOnClickListener {
-            addAmount("3")
-        }
-        bt_pad_4.setOnClickListener {
-            addAmount("4")
-        }
-
-        bt_pad_5.setOnClickListener {
-            addAmount("5")
-        }
-        bt_pad_6.setOnClickListener {
-            addAmount("6")
-        }
-        bt_pad_7.setOnClickListener {
-            addAmount("7")
-        }
-        bt_pad_8.setOnClickListener {
-            addAmount("8")
-        }
-        bt_pad_9.setOnClickListener {
-            addAmount("9")
-        }
+        bt_pad_0.setOnClickListener { addAmount("0") }
+        bt_pad_1.setOnClickListener { addAmount("1") }
+        bt_pad_2.setOnClickListener { addAmount("2") }
+        bt_pad_3.setOnClickListener { addAmount("3") }
+        bt_pad_4.setOnClickListener { addAmount("4") }
+        bt_pad_5.setOnClickListener { addAmount("5") }
+        bt_pad_6.setOnClickListener { addAmount("6") }
+        bt_pad_7.setOnClickListener { addAmount("7") }
+        bt_pad_8.setOnClickListener { addAmount("8") }
+        bt_pad_9.setOnClickListener { addAmount("9") }
+        bt_pad_00.setOnClickListener { addAmount("00") }
         bt_pad_comma.setOnClickListener {
             mIsDefaultValue = false
             addAmount(".")
-        }
-        bt_pad_0.setOnClickListener {
-            addAmount("0")
-        }
-        bt_pad_00.setOnClickListener {
-            addAmount("00")
         }
         bt_pad_backspace.setOnClickListener {
             changeActiveAmountTo(mActiveCurrencyAmount.dropLast(1))
@@ -316,15 +294,9 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         mActiveCurrencyAmount = "" + resetNumber
         mIsDefaultValue = true
         when (activeIndex) {
-            0 -> {
-                tv_currency_1_quantity.text = mActiveCurrencyAmount
-            }
-            1 -> {
-                tv_currency_2_quantity.text = mActiveCurrencyAmount
-            }
-            2 -> {
-                tv_currency_3_quantity.text = mActiveCurrencyAmount
-            }
+            0 -> tv_currency_1_quantity.text = mActiveCurrencyAmount
+            1 -> tv_currency_2_quantity.text = mActiveCurrencyAmount
+            2 -> tv_currency_3_quantity.text = mActiveCurrencyAmount
         }
 
         calculateConversions()
@@ -360,15 +332,9 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
                 resetActiveCurrencyValues(mActiveCurrencyIndex, 0)
             }
             when (mActiveCurrencyIndex) {
-                0 -> {
-                    tv_currency_1_quantity.text = mActiveCurrencyAmount
-                }
-                1 -> {
-                    tv_currency_2_quantity.text = mActiveCurrencyAmount
-                }
-                2 -> {
-                    tv_currency_3_quantity.text = mActiveCurrencyAmount
-                }
+                0 -> tv_currency_1_quantity.text = mActiveCurrencyAmount
+                1 -> tv_currency_2_quantity.text = mActiveCurrencyAmount
+                2 -> tv_currency_3_quantity.text = mActiveCurrencyAmount
             }
 
             calculateConversions()

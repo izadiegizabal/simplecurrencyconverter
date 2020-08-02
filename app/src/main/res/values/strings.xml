@@ -2,6 +2,7 @@
     <string name="app_name">Converter</string>
 
     <string name="exchanges_provided_at">Rates updated at %1$s</string>
+    <string name="exchanges_provided_soon">Wait until we retrieve the rates…</string>
     <string name="currency_desc">%1$s</string>
 
     <string name="tt_currency_1">Select First Currency</string>
