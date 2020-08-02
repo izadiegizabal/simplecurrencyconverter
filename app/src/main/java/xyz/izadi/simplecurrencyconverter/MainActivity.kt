@@ -163,9 +163,12 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         }
 
         val updatedAt = currencyViewModel.getLastUpdateDate()
-        if (updatedAt != null) tv_exchange_provider.text = getString(R.string.exchanges_provided_at,
-            getDateString(updatedAt)
-        ) else tv_exchange_provider.text = getString(R.string.exchanges_provided_soon)
+        if (updatedAt != null) {
+            tv_exchange_provider.text = getString(R.string.exchanges_provided_at,
+            getDateString(updatedAt))
+        } else {
+            tv_exchange_provider.text = getString(R.string.exchanges_provided_soon)
+        }
     }
 
     private fun getAmount(): Double {
@@ -175,19 +178,20 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     private fun setUpCurrencySelectorListeners() {
         ll_currency_1.setOnClickListener {
             mSelectingCurrencyIndex = 0
-            CurrenciesListDialogFragment.newInstance(mCurrencies)
-                .show(supportFragmentManager, "dialog")
+            openCurrencyPickerDialog()
         }
         ll_currency_2.setOnClickListener {
             mSelectingCurrencyIndex = 1
-            CurrenciesListDialogFragment.newInstance(mCurrencies)
-                .show(supportFragmentManager, "dialog")
+            openCurrencyPickerDialog()
         }
         ll_currency_3.setOnClickListener {
             mSelectingCurrencyIndex = 2
-            CurrenciesListDialogFragment.newInstance(mCurrencies)
-                .show(supportFragmentManager, "dialog")
+            openCurrencyPickerDialog()
         }
+    }
+
+    private fun openCurrencyPickerDialog(){
+        CurrenciesListDialogFragment.newInstance(mCurrencies).show(supportFragmentManager, "dialog")
     }
 
     override fun onCurrencyClicked(code: String) {
@@ -198,15 +202,9 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
     private fun setUpAmountListeners() {
         tv_currency_1_quantity.setOnClickListener {
             if (mActiveCurrencyIndex != 0) {
-                tv_currency_1_quantity.setTextColor(
-                    ContextCompat.getColor( this, R.color.colorAccent)
-                )
-                tv_currency_2_quantity.setTextColor(
-                    ContextCompat.getColor(this, R.color.color_on_background)
-                )
-                tv_currency_3_quantity.setTextColor(
-                    ContextCompat.getColor( this, R.color.color_on_background )
-                )
+                tv_currency_1_quantity.setTextColor(getActiveColor())
+                tv_currency_2_quantity.setTextColor(getNonActiveColor())
+                tv_currency_3_quantity.setTextColor(getNonActiveColor())
 
                 resetActiveCurrencyValues(0, 1)
             }
@@ -214,24 +212,9 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
         tv_currency_2_quantity.setOnClickListener {
             if (mActiveCurrencyIndex != 1) {
-                tv_currency_1_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
-                )
-                tv_currency_2_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.colorAccent
-                    )
-                )
-                tv_currency_3_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
-                )
+                tv_currency_1_quantity.setTextColor(getNonActiveColor())
+                tv_currency_2_quantity.setTextColor(getActiveColor())
+                tv_currency_3_quantity.setTextColor(getNonActiveColor())
 
                 resetActiveCurrencyValues(1, 1)
             }
@@ -239,30 +222,22 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
         tv_currency_3_quantity.setOnClickListener {
             if (mActiveCurrencyIndex != 2) {
-                tv_currency_1_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
-                )
-                tv_currency_2_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.color_on_background
-                    )
-                )
-                tv_currency_3_quantity.setTextColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.colorAccent
-                    )
-                )
+                tv_currency_1_quantity.setTextColor(getNonActiveColor())
+                tv_currency_2_quantity.setTextColor(getNonActiveColor())
+                tv_currency_3_quantity.setTextColor(getActiveColor())
 
                 resetActiveCurrencyValues(2, 1)
             }
         }
 
         tv_currency_1_quantity.performClick()
+    }
+
+    private fun getNonActiveColor(): Int {
+        return ContextCompat.getColor( this, R.color.color_on_background )
+    }
+    private fun getActiveColor(): Int {
+        return ContextCompat.getColor( this, R.color.colorAccent )
     }
 
     private fun setUpPadListeners() {
@@ -293,6 +268,7 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
         mActiveCurrencyIndex = activeIndex
         mActiveCurrencyAmount = "" + resetNumber
         mIsDefaultValue = true
+
         when (activeIndex) {
             0 -> tv_currency_1_quantity.text = mActiveCurrencyAmount
             1 -> tv_currency_2_quantity.text = mActiveCurrencyAmount
@@ -323,14 +299,13 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
     private fun changeActiveAmountTo(amount: String) {
         if (mActiveCurrencyIndex != -1) {
-            // limit length to 15
-            if (amount.length > 15) {
-                return
-            }
+            // limit length of the text
+            if (amount.length > 15) return
+
             mActiveCurrencyAmount = reformatIfNeeded(amount)
-            if (amount.isBlank()) {
-                resetActiveCurrencyValues(mActiveCurrencyIndex, 0)
-            }
+
+            if (amount.isBlank()) resetActiveCurrencyValues(mActiveCurrencyIndex, 0)
+
             when (mActiveCurrencyIndex) {
                 0 -> tv_currency_1_quantity.text = mActiveCurrencyAmount
                 1 -> tv_currency_2_quantity.text = mActiveCurrencyAmount
