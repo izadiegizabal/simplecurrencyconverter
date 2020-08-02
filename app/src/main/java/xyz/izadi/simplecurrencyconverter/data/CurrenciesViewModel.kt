@@ -7,6 +7,8 @@ import kotlinx.coroutines.launch
 import xyz.izadi.simplecurrencyconverter.data.api.Currencies
 import xyz.izadi.simplecurrencyconverter.data.api.Rates
 import xyz.izadi.simplecurrencyconverter.data.db.DBCurrency
+import xyz.izadi.simplecurrencyconverter.utils.getCurrenciesFromDBFormat
+import xyz.izadi.simplecurrencyconverter.utils.getRatesFromDBFormat
 import java.util.*
 
 class CurrenciesViewModel(application: Application) : AndroidViewModel(application) {
@@ -30,7 +32,11 @@ class CurrenciesViewModel(application: Application) : AndroidViewModel(applicati
                         currenciesLiveData.postValue(currencyRequest)
                     }
                 } else {
-                    currenciesLiveData.postValue(getCurrenciesFromDBFormat(ratesDB))
+                    currenciesLiveData.postValue(
+                        getCurrenciesFromDBFormat(
+                            ratesDB
+                        )
+                    )
                 }
 
                 if (doWeUpdate()) {
@@ -39,7 +45,11 @@ class CurrenciesViewModel(application: Application) : AndroidViewModel(applicati
                         updateRates()
                     }
                 } else {
-                    ratesLiveData.postValue(getRatesFromDBFormat(ratesDB))
+                    ratesLiveData.postValue(
+                        getRatesFromDBFormat(
+                            ratesDB
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 e.stackTrace

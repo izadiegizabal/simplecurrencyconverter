@@ -3,8 +3,8 @@ package xyz.izadi.simplecurrencyconverter.data.api
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import retrofit2.http.GET
-import xyz.izadi.simplecurrencyconverter.data.addCommas
-import xyz.izadi.simplecurrencyconverter.data.round
+import xyz.izadi.simplecurrencyconverter.utils.addCommas
+import xyz.izadi.simplecurrencyconverter.utils.round
 
 interface CurrencyLayerApi {
     @GET("/live")
@@ -31,7 +31,10 @@ data class Rates(
         val fromRate = quotes["USD$from"] ?: error("No available origin rate")
         val toRate = quotes["USD$to"] ?: error("No available destination rate")
         val conversion = (quantity / fromRate.toDouble()) * toRate.toDouble()
-        val roundedString = round(conversion, 4).toString()
+        val roundedString = round(
+            conversion,
+            4
+        ).toString()
         return addCommas(roundedString)
     }
 }

@@ -8,19 +8,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import xyz.izadi.simplecurrencyconverter.data.CurrenciesViewModel
 import xyz.izadi.simplecurrencyconverter.data.api.Currencies
 import xyz.izadi.simplecurrencyconverter.data.api.Rates
-import xyz.izadi.simplecurrencyconverter.data.getDateString
-import xyz.izadi.simplecurrencyconverter.data.reformatIfNeeded
+import xyz.izadi.simplecurrencyconverter.databinding.ActivityMainBinding
+import xyz.izadi.simplecurrencyconverter.utils.getDateString
+import xyz.izadi.simplecurrencyconverter.utils.reformatIfNeeded
 import java.util.*
 
 class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener {
     private val activeCurCodes = ArrayList<String>()
     private lateinit var currencyViewModel: CurrenciesViewModel
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var mCurrencies: Currencies
     private lateinit var mRates: Rates
@@ -31,12 +34,13 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         currencyViewModel = ViewModelProvider(
             this, CurrenciesViewModel.Factory(application = application)
         ).get(CurrenciesViewModel::class.java)
 
+        binding.isLoading = true
         observeViewModel(currencyViewModel)
 
         setUpCurrencySelectorListeners()
@@ -58,6 +62,7 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
             if (rates != null) {
                 mRates = rates
 
+                binding.isLoading = false
                 setPreferredCurrencies()
                 calculateConversions()
                 setUpAmountListeners()
@@ -300,7 +305,8 @@ class MainActivity : AppCompatActivity(), CurrenciesListDialogFragment.Listener 
             // limit length of the text
             if (amount.length > 15) return
 
-            mActiveCurrencyAmount = reformatIfNeeded(amount)
+            mActiveCurrencyAmount =
+                reformatIfNeeded(amount)
 
             if (amount.isBlank()) resetActiveCurrencyValues(mActiveCurrencyIndex, 0)
 

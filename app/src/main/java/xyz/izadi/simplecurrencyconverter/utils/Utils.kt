@@ -1,4 +1,4 @@
-package xyz.izadi.simplecurrencyconverter.data
+package xyz.izadi.simplecurrencyconverter.utils
 
 import xyz.izadi.simplecurrencyconverter.data.api.Currencies
 import xyz.izadi.simplecurrencyconverter.data.api.Rates
@@ -26,7 +26,12 @@ fun addCommas(numberString: String): String {
     // Add 1,000 thousand comma
     if (amountParts[0].length >= 4) {
         val originalString = amountParts[0].replace(",", "")
-        val numberWithCommas = insertPeriodically(originalString, ",", 3)
+        val numberWithCommas =
+            insertPeriodically(
+                originalString,
+                ",",
+                3
+            )
         quantityRes = numberWithCommas
         if (amountParts.size > 1) {
             quantityRes += "." + amountParts[1]
